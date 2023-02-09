@@ -157,7 +157,7 @@ void InputString(char *str, stack **top)
 
 
 
-// cannot print ptr->dataWord
+// cannot print ptr->dataWord  
 void InputWord(char *str, stack **top)
 {
     int i = 0;
@@ -208,6 +208,8 @@ void InputWord(char *str, stack **top)
 void popBackward(int check, stack **top) // top is start
 {
     stack *ptr = *top;
+    int i = 0;
+    printf("%s\n", (*top)->dataWord);
     if (top == NULL)
     {
         printf("STACK UNDERFLOW");
@@ -225,11 +227,16 @@ void popBackward(int check, stack **top) // top is start
         }
         else if (check == 3)
         {
-            printf("%c", ptr->dataStr);
+            printf("%c ", ptr->dataStr);
         }
         else if (check == 4)
         {
-            printf("%s ", ptr->dataWord);
+            while (ptr->dataWord[i] != '\0')
+            {
+                printf("%c", ptr->dataWord[i]);
+            }
+            printf(" ");
+            
         }
     }
     free(ptr);
@@ -352,6 +359,7 @@ int main()
     else if (check == 4)
     {
         InputWord(str, &ll);
+        //printf("%s", ll->dataWord);
         while(ll != NULL)
         {
             popBackward(check, &ll);
