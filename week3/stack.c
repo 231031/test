@@ -1,52 +1,53 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-typedef struct
+typedef struct listNode
 {
     int data;
-    struct node *next;
-} node;
+    struct listNode *next;
+}node;
 
-void push(node **ptr) // insert new element
+void push(node **top, int data)
 {
+    node *newnode;
+    newnode = (node*)malloc(sizeof(node));
+    newnode->data = data;
 
-}
-
-void createList(node **top)
-{
-    *top = NULL;
-    node *newNode, *ptr;
-    int num;
-    char str[50];
-    newNode = (node*)malloc(sizeof(node));
-    newNode->data = num;
-    newNode->next = NULL;
     if (*top == NULL)
     {
-        *top = newNode;
+        newnode->next = NULL;
+        *top = newnode;
     }
     else
     {
-        ptr->next = newNode;
+        newnode->next = *top;
+        *top = newnode;
     }
-    ptr = newNode;
 }
 
-void display(node *ptr)
+void pop(node **top)
 {
-
-}
-
-
-
-void pop(node **ptr) // pop last element
-{
-
+    node *ptr = *top;
+    if (*top == NULL)
+    {
+        printf("Stack Overflow");
+    }
+    else
+    {
+        *top = (*top)->next;
+        printf("data is %d", ptr->data);
+        free(ptr);
+    }
 }
 
 int main()
 {
-    node *ll;
-    createList(&ll);
+    node *stack;
+    push(&stack, 10);
+    push(&stack, 20);
+
+    pop(&stack);
+    printf("\n");
+    pop(&stack);
     return 0;
 }
