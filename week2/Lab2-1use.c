@@ -12,7 +12,7 @@ typedef struct node
 int createList(node **start)
 {
     int i = 0, j = 0;
-    int num[20];
+    int num;
     char str[50];
     char *str2;
     char temp;
@@ -21,65 +21,27 @@ int createList(node **start)
 
     // user input
     fgets(str, 50, stdin);
-    
+
     if (str[0] == 'E') // check END
     {
         printf("None\n");
         return -1;
     }
 
-    // count blank spaces
-    while (str[j] != 'E')
-    {
-        if (str[j] == ' ') // check blank space
-        {
-            i++;
-        }
-        j++;
-    }
-    // printf("blank space: %d\n", i);
-
     str2 = str;
-    j = 0;
 
-    // convert string to array int
-    while (j < i)
+    // created Link list
+    while (1)
     {
-        sscanf(str2, "%d %c", &num[j], &temp);
-        if (num[j] >= 10) // เลข 2 หลัก + blank space
+        sscanf(str2, "%d", &num);
+        while (*str2 != ' ' && *str2 != 'E')
         {
-            str2++;
-            str2++;
-            str2++;
-        }
-        else if (num[j] >= 1) //เลข 1 หลัก + blank space
-        {
-            str2++;
-            str2++;
-        }
-        else if (num[j] >= -9) // เครื่องหมายลบ + เลข 1 หลัก + blank space
-        {
-            str2++;
-            str2++;
-            str2++;
-        }
-        else if (num[j] >= -99) // เครื่องหมายลบ + เลข 2 หลัก + blank space
-        {
-            str2++;
-            str2++;
             str2++;
         }
 
-        // printf("num %d\n", num[j]);
-        j++;
-    }
-
-    j = 0;
-    while (j < i)
-    {
         // Generate new node
         newNode = (node *)malloc(sizeof(node));
-        newNode->data = num[j]; // define data
+        newNode->data = num; // define data
         newNode->next = NULL;   // no link
 
         // Link new node to the linked list
@@ -88,7 +50,12 @@ int createList(node **start)
         else
             ptr->next = newNode; // if latter node, link from current
         ptr = newNode;           // move current to new node
-        j++;
+
+        str2++;                  // skip blank space
+        if (*str2 == 'E')
+        {
+            break;
+        }
     }
 
     return 0;
@@ -100,7 +67,7 @@ int check(node **start)
     int num = 0;
     node *preptr = *start, *midptr, *ptr;
     midptr = preptr->next;
-    if (midptr == NULL)
+    if (midptr == NULL) // if input มีตีวเดียว
     {
         return 0;
     }
@@ -138,7 +105,7 @@ int check(node **start)
         }
     }
 
-    if (midptr->next == NULL && preptr->data == midptr->data) // ถ้าตัวสุดท้ายกับตัวก่อนสุดเท่ากัน
+    if (midptr->next == NULL && preptr->data == midptr->data) // ถ้าตัวสุดท้ายกับตัวก่อนสุดท้ายเท่ากัน
     {
         printf("None\n");
         return -1;
@@ -148,13 +115,13 @@ int check(node **start)
     {
         *start = midptr;
     }
-    //printf("start %d\n", (*start)->data);
+    // printf("start %d\n", (*start)->data);
 
     // new link
     // เช็คเลขที่ซ้ำ
     preptr = *start;
     midptr = preptr->next;
-    if (midptr == NULL) //ถ้าเหลือ start ตัวเดียว ออกจาก function
+    if (midptr == NULL) // ถ้าเหลือ start ตัวเดียว ออกจาก function
     {
         return 0;
     }
@@ -179,11 +146,12 @@ int check(node **start)
             {
                 break;
             }
-            if (ptr->next == NULL) //ถ้า ptr ถึงตัวสุดท้ายแล้ว
+            if (ptr->next == NULL) // ถ้า ptr ถึงตัวสุดท้ายแล้ว
             {
                 preptr->next = ptr;
                 break;
             }
+            // ถ้าออกจากลูปเล็กแล้วไม่เข้าเงื่อนไขข้างบนเลย ให้เช็ค ptr ที่ออกมากับตัวถัดไปว่าเท่ากันไหม ถ้าไม่เท่าก็ link เลย แต่ถ้าเท่าไปเงื่อนไขถัดไป
             if (ptr->data != ptr->next->data) // เช็คเลขที่ไม่ซ้ำกับ preptr กับ เลขตัวถัดไปของเลขที่ไม่ซ้ำ
             {
                 preptr->next = ptr; // link ไปเลขที่ไม่ซ้ำ
@@ -197,7 +165,7 @@ int check(node **start)
             }
             else // เลื่อนไปตัวถัดถัดไป
             {
-                if (ptr->next->next == NULL)
+                if (ptr->next->next == NULL) // เช็คก่อนเลื่อนเสมอ
                 {
                     preptr->next = NULL;
                     return 0;
@@ -205,14 +173,12 @@ int check(node **start)
                 midptr = ptr->next->next;
                 ptr = midptr->next;
             }
-            
         }
         else // preptr ไม่ซ้ำกับ midptr และ midptr ไม่ซ้ำกับ ptr
         {
             preptr = preptr->next;
             midptr = midptr->next;
             ptr = ptr->next;
-
         }
     }
     return 0;

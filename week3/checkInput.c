@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct stack
 {
@@ -157,7 +158,7 @@ void InputString(char *str, stack **top)
 
 
 
-// cannot print ptr->dataWord  
+
 void InputWord(char *str, stack **top)
 {
     int i = 0;
@@ -181,7 +182,8 @@ void InputWord(char *str, stack **top)
         // Generate new stack
         newStack = (stack *)malloc(sizeof(stack));
         newStack->dataWord = (char*)malloc(10 * sizeof(char));
-        newStack->dataWord = strInput; // define data
+        strcpy(newStack->dataWord, strInput);
+        //newStack->dataWord = strInput; // define data
         newStack->next = NULL;         // no link
 
         // Link new stack to the linked list
@@ -209,7 +211,7 @@ void popBackward(int check, stack **top) // top is start
 {
     stack *ptr = *top;
     int i = 0;
-    printf("%s\n", (*top)->dataWord);
+    char *str;
     if (top == NULL)
     {
         printf("STACK UNDERFLOW");
@@ -231,12 +233,8 @@ void popBackward(int check, stack **top) // top is start
         }
         else if (check == 4)
         {
-            while (ptr->dataWord[i] != '\0')
-            {
-                printf("%c", ptr->dataWord[i]);
-            }
-            printf(" ");
-            
+            str = ptr->dataWord;
+            printf("%s ", str);
         }
     }
     free(ptr);
@@ -246,6 +244,7 @@ void popBackward(int check, stack **top) // top is start
 
 int popForward(int check, stack **top) // top is last one in linked list check pt->next == NULL
 {
+    char *str;
     stack *ptr = *top, *preptr = *top;
     if (top == NULL)
     {
@@ -269,7 +268,8 @@ int popForward(int check, stack **top) // top is last one in linked list check p
             }
             else if (check == 4)
             {
-                printf("%s ", ptr->dataWord);
+                str = ptr->dataWord;
+                printf("%s ", str);
             }
             (*top) = NULL;
             return 0;
@@ -294,7 +294,8 @@ int popForward(int check, stack **top) // top is last one in linked list check p
         }
         else if (check == 4)
         {
-            printf("%s ", ptr->dataWord);
+            str = ptr->dataWord;
+            printf("%s ", str);
         }
         free(ptr);
     }

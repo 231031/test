@@ -8,57 +8,37 @@ typedef struct node
     struct node *next;
 } node;
 
-void createList(node **start)
+int createList(node **start)
 {
     int i = 0, j = 0;
-    int num[20];
+    int num = 0;
     char str[50];
     char *str2;
     char temp;
     node *newNode, *ptr;
     *start = NULL;
+    str2 = str;
 
     // user input
     fgets(str, 50, stdin);
-
-    // count blank spaces
-    while (str[j] != 'E')
+    if (str[0] == '\n')
     {
-        if (str[j] == ' ') // check blank space
-        {
-            i++;
-        }
-        j++;
+        printf("\n");
+        return -1;
     }
 
-
-    str2 = str;
-    j = 0;
-    // convert string to array int
-    while (j < i)
+    // created Link list
+    while (1)
     {
-        sscanf(str2, "%d %c", &num[j], &temp);
-        if (num[j] >= 10) // เลข 2 หลัก + blank space
+        sscanf(str2, "%d", &num);
+        while (*str2 != ' ' && *str2 != 'E')
         {
-            str2++;
-            str2++;
-            str2++;
-        }
-        else if (num[j] >= 1) // เลข 1 หลัก + blank space
-        {
-            str2++;
             str2++;
         }
 
-        j++;
-    }
-
-    j = 0;
-    while (j < i)
-    {
         // Generate new node
         newNode = (node *)malloc(sizeof(node));
-        newNode->data = num[j]; // define data
+        newNode->data = num; // define data
         newNode->next = NULL;   // no link
 
         // Link new node to the linked list
@@ -67,8 +47,15 @@ void createList(node **start)
         else
             ptr->next = newNode; // if latter node, link from current
         ptr = newNode;           // move current to new node
-        j++;
+
+        str2++;                  // skip blank space
+        if (*str2 == 'E')
+        {
+            break;
+        }
     }
+
+    return 0;
 }
 
 
@@ -90,7 +77,6 @@ void revertList(node **start, int startPoint, int endPoint)
         // find point that want to revert and get number of point
         while (i <= endPoint - count)
         {
-            
             if (i == startPoint + count)
             { 
                 swapStart = swap->data; 
@@ -105,16 +91,12 @@ void revertList(node **start, int startPoint, int endPoint)
             {
                 ptr->data = swapStart;
             }
-
             swap = swap->next;
             ptr = ptr->next;
             i++;
         }
-
-        
         i = 1;
         ptr = *start;
-
         // swap startPoint with number of endPoint
         while (i <= startPoint + count)
         {
@@ -147,8 +129,13 @@ void display(node *start)
 int main()
 {
     int startPoint, endPoint;
+    int check = 0;
     node *ll;
-    createList(&ll);
+    check = createList(&ll);
+    if (check == -1)
+    {
+        return 0;
+    }
     scanf("%d %d", &startPoint, &endPoint);
     revertList(&ll, startPoint, endPoint);
     display(ll);

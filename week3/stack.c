@@ -7,16 +7,29 @@ typedef struct
     struct node *next;
 } node;
 
-void createList(node **ptr)
+void push(node **ptr) // insert new element
 {
-    if (*ptr == NULL)
-    {
 
+}
+
+void createList(node **top)
+{
+    *top = NULL;
+    node *newNode, *ptr;
+    int num;
+    char str[50];
+    newNode = (node*)malloc(sizeof(node));
+    newNode->data = num;
+    newNode->next = NULL;
+    if (*top == NULL)
+    {
+        *top = newNode;
     }
     else
     {
-        
+        ptr->next = newNode;
     }
+    ptr = newNode;
 }
 
 void display(node *ptr)
@@ -24,10 +37,7 @@ void display(node *ptr)
 
 }
 
-void push(node **ptr) // insert new element
-{
 
-}
 
 void pop(node **ptr) // pop last element
 {

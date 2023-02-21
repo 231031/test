@@ -10,7 +10,7 @@ typedef struct node
 int createList(node **start)
 {
     int i = 0, j = 0;
-    int num[20];
+    int num;
     char str[50];
     char *str2;
     char temp;
@@ -33,35 +33,20 @@ int createList(node **start)
         }
         j++;
     }
-    // printf("blank space: %d\n", i);
 
     str2 = str;
-    j = 0;
-    // convert string to array int
-    while (j < i)
+    // created Link list
+    while (1)
     {
-        sscanf(str2, "%d %c", &num[j], &temp);
-        if (num[j] >= 10) // เลข 2 หลัก + blank space
+        sscanf(str2, "%d", &num);
+        while (*str2 != ' ' && *str2 != 'E')
         {
             str2++;
-            str2++;
-            str2++;
         }
-        else if (num[j] >= 1) // เลข 1 หลัก + blank space
-        {
-            str2++;
-            str2++;
-        }
-        // printf("num %d\n", num[j]);
-        j++;
-    }
 
-    j = 0;
-    while (j < i)
-    {
         // Generate new node
         newNode = (node *)malloc(sizeof(node));
-        newNode->data = num[j]; // define data
+        newNode->data = num; // define data
         newNode->next = NULL;   // no link
 
         // Link new node to the linked list
@@ -70,27 +55,22 @@ int createList(node **start)
         else
             ptr->next = newNode; // if latter node, link from current
         ptr = newNode;           // move current to new node
-        j++;
+
+        str2++;                  // skip blank space
+        if (*str2 == 'E')
+        {
+            break;
+        }
     }
     return i - 1;
 }
 
-void display(node *start)
-{
-    node *ptr = start; // start
-    // printf("Data in the list: ");
-    while (ptr != NULL)
-    {
-        printf("%d ", ptr->data); // print data of current node
-        ptr = ptr->next;          // move current to the next node
-    }
-    printf("\n");
-}
 
 // add move next of node before node that cut to next node
 // change endIndex to endIndex - 1
 // new loop after found node that want to move begin from star
 // 5 6 7 8 7 END
+    // 5 6 7 8 7 END
 int palindromeCheck(node **start, int endIndex)
 {
     node *ptrEnd = *start, *ptrStart = *start;
@@ -117,7 +97,6 @@ int palindromeCheck(node **start, int endIndex)
     // case cannot make palindrome
     // ถ้าไม่มีเลขที่ซ้ำกันเลยจะไม่เป็น palindrome
     // 1 2 3 END
-    // 5 6 7 8 7 END
     // check ptrStart with ptrEnd ทุกตัวที่อยู่หลังจาก ptrStart นั้น 
     ptrEnd = ptrEnd->next;
     while (ptrStart != NULL)
@@ -165,7 +144,8 @@ int palindromeCheck(node **start, int endIndex)
     // printf("endIndexNew = %d\n", endIndexNew);
 
     // endIndexNew != endIndex check case that maybe None
-    while (((startIndex + count != endIndexNew - count) && (endIndexNew != endIndex) && checkNew == 0) && ((startIndex + count < endIndexNew - count) && (endIndexNew != endIndex) && checkNew == 0))
+    while (((startIndex + count != endIndexNew - count) && (endIndexNew != endIndex) && checkNew == 0) && 
+    ((startIndex + count < endIndexNew - count) && (endIndexNew != endIndex) && checkNew == 0))
     {
         ptrStart = *start;
         ptrEnd = *start;
@@ -224,30 +204,27 @@ int palindromeCheck(node **start, int endIndex)
         i = 0;
         if (ptrStart->data != ptrEnd->data)
         {
-
-            // 5 2 3 5
-            // 5 4 2 1 4 5
-            // in case startIndex and endIndex ต่อกัน
-            // เช็คตัวที่ต่อกัน
-            if (startIndex + count == endIndex - count - 1)
+            // in case startIndex and endIndex ต่อกัน เช็คตัวที่ต่อกัน
+            if (startIndex + count == endIndex - count - 1)// 5 2 3 5 or 5 4 2 1 4 5
             {
-                // printf("In loop\n");
                 ptrStart = *start;
                 while (i < startIndex + count - 1)
                 {
                     ptrStart = ptrStart->next;
                     i++;
                 }
+                // เอาออก
+                /*
                 if (i == 0) // check 1 2 END
                 {
                     index[j] = startIndex + count;
                     break;
                 }
+                */
                 ptrStart->next = ptrStart->next->next->next;
                 index[j] = startIndex + count;
                 break;
             }
-
             // keep data for check
             // endIndex check with startIndex + 1 and startIndex check with endIndex - 1
             startCheck = ptrStart->data;
@@ -311,7 +288,6 @@ int palindromeCheck(node **start, int endIndex)
         }
     }
 
-    // printf("before check min index\n");
     //  check min index
     j = 0;
     if (index[j] == -1)
@@ -329,8 +305,6 @@ int palindromeCheck(node **start, int endIndex)
             }
             j++;
         }
-        // printf("index[0] = %d\n",index[0]);
-        // printf("index[1] = %d\n",index[1]);
         printf("%d", min);
     }
 }
