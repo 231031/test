@@ -16,6 +16,17 @@ First Line : Dequeue element
 ### if queue is empty when dequeue, print None
 
 ### input may consist of character
+
+1 2 3
+2
+​output
+​1 2
+
+
+1 2 3
+4
+output
+1 2 3 None
 */
 
 #include <stdio.h>

@@ -1,3 +1,27 @@
+/*
+Problem :
+
+Implement stacks using linked list
+
+Input : 
+
+First Line : An array, arr (1 <= arr.length <= 10^5)
+
+Second Line : How many pop, (1<= pop <= 10^5)
+
+Output : 
+
+First Line to pop Line : Each stack member from Pop. If stack Empty return None
+
+1 2 3 4 5 6
+4
+​output 6 5 4 3
+
+0 0 0 1 0
+6
+output 0 1 0 0 0 None
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,9 +45,10 @@ int push(node **top)
 
     if (check == NULL)
     {
-        return 0;
+        return -1;
     }
     
+
     while (token != NULL)
     {
         node *newnode;
@@ -42,10 +67,12 @@ int push(node **top)
         }
         token = strtok(NULL, " ");
     }
+    
 }
 
 void pop(node **top)
 {
+    
     node *ptr = *top;
     if (*top == NULL)
     {
@@ -62,27 +89,21 @@ void pop(node **top)
 int main()
 {
     node *stack = NULL;
-    push(&stack);
-
-    char count;
-
-    scanf("%c", &count);
-
-    if (count == '\n')
+    int check = 0;
+    check = push(&stack);
+    if (check == -1)
     {
+        printf("None\n");
         return 0;
     }
-    else
+    
+    int count;
+
+    scanf("%d", &count);
+    
+    for (int i = 0; i < count; i++)
     {
-        int n = atoi(&count);
-        while (n <= 1 || n >= 100000)
-        {
-            scanf("%c", &count);
-        }
-        for (int i = 0; i < n; i++)
-        {
-            pop(&stack);
-        }
+        pop(&stack);
     }
 
     return 0;

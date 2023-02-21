@@ -1,3 +1,52 @@
+/*
+Implement a circular queue using an array with the following operations:​
+
+Enqueue: Add an element to the rear of the queue
+Dequeue: Remove and return the element at the front of the queue
+Input: 
+
+First Line : An integer n (1 ≤ n ≤ 100), the maximum number of elements that can be stored in the queue
+
+Second Line : A sequence of m (0 ≤ m ≤ n) space-separated input, the elements to enqueue in the queue
+
+Third Line : An integer n (1 ≤ n ), the number of output ( dequeue )
+
+Fourth Line : A sequence of m (0 ≤ m ≤ n) space-separated input, the elements to enqueue in the queue
+
+Fifth Line : An integer n (1 ≤ n ), the number of output ( dequeue )
+
+Output: 
+
+First Line : Dequeue element first time
+
+Second Line : Dequeue element second time
+
+### if queue is empty when dequeue, print None
+
+### if total input exceed queue maximum element print FULLqueue and don't care incoming input
+
+### input may consist of character
+
+3
+1 2 3
+2
+4 5
+2
+​output
+​1 2
+3 4
+
+
+3
+1 2 3 4
+4
+4 5 
+1
+​output
+​FULLqueue
+1 2 3 None
+4
+*/
 #include <stdio.h>
 #include <string.h>
 
