@@ -65,40 +65,7 @@ void printQueue(PriorityQueue *queue) {
     printf("\n");
 }
 
-void enterKiller(char *str){
-    if(str[strlen(str)-1] == '\n'){
-        str[strlen(str)-1] = '\0';
-    }
-}
+int main()
+{
 
-int main() {
-    PriorityQueue *queue = createPriorityQueue();
-    char str[2222];
-    int n;
-
-    fgets(str,2022,stdin);
-    enterKiller(str);
-    char *ptr = strtok(str, " ");
-    while (ptr != NULL) {
-        char *strPtr = ptr;
-        //printf("%s ",ptr);
-        ptr = strtok(NULL, " ");
-
-        n = atoi(ptr);
-        if(n == -1){
-            n = queue->head->priority - n;
-        }
-        //printf("%d \n",n);
-        enqueue(queue,strPtr,n);
-        ptr = strtok(NULL, " ");
-    }
-
-    printQueue(queue);
-    scanf("%d",&n);
-
-    for(int i=0;i<n;i++){
-        char *c = dequeue(queue);
-        printf("%s ",c);
-    }
-    return 0;
 }
