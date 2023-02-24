@@ -44,7 +44,7 @@ int getData(data **dataAll)
 
     fgets(input, 200, stdin);
     token = strtok(input, " "); 
-    token[strlen(token)] = '\0';
+    //token[strlen(token)] = '\0';
     while (token != NULL)
     {
         sscanf(token, "%d", &number[i]);
