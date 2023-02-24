@@ -26,7 +26,7 @@ First Line : Dequeue element
 1 2 3
 4
 output
-1 2 3 None
+1 2 3 None 
 */
 
 #include <stdio.h>
