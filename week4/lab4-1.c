@@ -106,20 +106,13 @@ int dequeue(int *rear,int *front, char data[][100], int max, int output)
     char *val;
     if (*front == -1) // underflow
     {
-        printf("None");
+        printf("None ");
         return -1;
     }
     val = data[*front];
     printf("%s ", val);
     if (*front == *rear)
     {
-        if (output - 1 != *front)
-        { 
-            printf("None");
-            *front = -1;
-            *rear = -1;
-            return -1;
-        }
         *front = -1;
         *rear = -1;
     }
@@ -176,10 +169,6 @@ int main()
     while (i < output)
     {
         check = dequeue(&rear, &front, data, max, output);
-        if (check == -1)
-        {
-            break;
-        }
         i++;
     }
     printf("\n");
@@ -204,10 +193,6 @@ int main()
     while (i < output2)
     {
         check = dequeue(&rear, &front, data, max, output2);
-        if (check == -1)
-        {
-            break;
-        }
         i++;
     }
 }

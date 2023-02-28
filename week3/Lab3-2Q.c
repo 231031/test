@@ -3,7 +3,7 @@
 #include <string.h>
 typedef struct stack
 {
-    char *data; // add InputWord function and option 4
+    char *data; 
     struct stack *next;
 } stack;
 

@@ -1,112 +1,64 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-typedef struct stack
+typedef struct Node
 {
-    char *data; // add InputWord function and option 4
-    struct stack *next;
+    char *data;
+    struct Node *next;
+} node;
+
+typedef struct Stack
+{
+    struct Node *top;
 } stack;
 
-// get input for string
-void stringInput(char *buffer)
+void push(stack *st, char *str)
 {
-    fgets(buffer, 100, stdin);
-    if (buffer[strlen(buffer) - 1] == '\n')
-    {
-        buffer[strlen(buffer) - 1] = '\0';
-    }
+    node *newNode = (node *)malloc(sizeof(node));
+    newNode->data = strdup(str);
+    newNode->next = st->top;
+    st->top = newNode;
 }
 
-// make linked list stack from string
-// without destroy string
-stack *makeStack(char *buffer)
+char *pop(stack *st)
 {
-    stack *head = NULL;
-    // copy buffer before use
-    char *token = strtok(strdup(buffer), " ");
-    // no push function
-    while (token != NULL)
-    {
-        if (head != NULL)
-        {
-            stack *temp = malloc(sizeof(stack));
-            temp->next = head;
-            head = temp;
-        }
-        else
-        {
-            head = malloc(sizeof(stack));
-            head->next = NULL;
-        }
-        head->data = malloc(sizeof(char) * strlen(token));
-        strcpy(head->data, token);
-        token = strtok(NULL, " ");
-    }
-    return head;
-}
-
-// pop forward stack
-char *popForward(stack **head)
-{
-    if (*head == NULL)
+    if (st->top == NULL)
     {
         return "None";
     }
-    stack *temp = *head;
-    (*head) = (*head)->next;
-    char *buffer = strdup(temp->data);
+    node *temp = st->top;
+    st->top = temp->next;
+    char *str = strdup(temp->data);
     free(temp);
-    return buffer;
-}
-
-// pop backward stack
-char *popBackward(stack **head)
-{   
-    if (*head == NULL)
-    {
-        return "None";
-    }
-    stack *temp = *head;
-    stack *prev = NULL;
-    while (temp->next != NULL)
-    {
-        prev = temp;
-        temp = temp->next;
-    }
-    char *buffer = strdup(temp->data);
-    free(temp);
-    if (prev != NULL)
-    {
-        prev->next = NULL;
-    }
-    else
-    {
-        *head = NULL;
-    }
-    return buffer;
+    return str;
 }
 
 int main()
 {
-    // buffer for input
-    char buffer[100];
-    // head of stack
-    // get input
-    stringInput(buffer);
-    stack *head1 = makeStack(buffer);
-    stack *head2 = makeStack(buffer);
+    stack *st = (stack *)malloc(sizeof(stack));
+    st->top = NULL;
+    int cnt;
+    char str[1000];
 
-    // while stack is not empty
-    while (head1 != NULL)
+    fgets(str, 1000, stdin);
+    if (str[strlen(str) - 1] == '\n')
     {
-        // pop and print
-        printf("%s ", popBackward(&head1));
-    }
-    printf("\n");
-    while (head2 != NULL)
-    {
-        // pop and print
-        printf("%s ", popForward(&head2));
+        str[strlen(str) - 1] = '\0';
     }
 
+    char *ptr = strtok(str, " ");
+    while (ptr != NULL)
+    {
+        push(st, ptr);
+        ptr = strtok(NULL, " ");
+        cnt++;
+    }
+
+    scanf("%d", &cnt);
+    for (int i = 0; i < cnt; i++)
+    {
+        char *c = pop(st);
+        printf("%s ", c);
+    }
+    return 0;
 }

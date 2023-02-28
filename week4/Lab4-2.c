@@ -56,32 +56,28 @@ void createdQueue(node **front, char *str)
 {
     int i = 0;
     node *newNode, *ptr;
-    char *str2 = str;
-    char strInput[100];
+    char *token;
     *front = NULL;
 
-    while (*str2 != '\n')
+    token = strtok(str, " ");
+    while (token != NULL)
     {
-        i = 0;
-        while (*str2 != ' ' && *str2 != '\n')
+        if (token[strlen(token) - 1] == '\n') // check \n 
         {
-            sscanf(str2, "%c", &strInput[i]);
-            i++;
-            str2++;
+            token[strlen(token) - 1] = '\0';
         }
-        strInput[i] = '\0';
-
+        else
+        {
+            token[strlen(token)] = '\0';
+        }
 
         //generate newNode
-        newNode = (node*) malloc(sizeof(node));
-        strcpy(newNode->data, strInput);
+        newNode = (node*) malloc(sizeof(node)); 
+        strcpy(newNode->data, token);
         newNode->next = NULL;
-        enQueue(front, newNode, &ptr);
-        if (*str2 == '\n')
-        {
-            break;
-        }
-        str2++; // skip blank space
+        enQueue(front, newNode, &ptr); // add newNode to queue
+
+        token = strtok(NULL, " ");
     }
 
 }
@@ -92,7 +88,7 @@ int deQueue(node **front)
     ptr = *front;
     if (ptr == NULL)
     {
-        printf("None\n");
+        printf("None ");
         return -1;
     }
     *front = (*front)->next;
@@ -109,26 +105,33 @@ int main()
     char countStr[15];
     int count = 0, i = 0,check = 0;
     node *ll;
+
+    // input
     fgets(str, 10000, stdin);
-    if (str[0] == '\n')
+    if (str[0] == '\n') // check enter
     {
         printf("None\n");
         return 0;
     }
     fgets(countStr, 15, stdin);
-    if (countStr[0] == '\n')
+    if (countStr[0] == '\n') // check enter
     {
         printf("None\n");
         return 0;
     }
+
+    // enqueue in createdQueue function
     createdQueue(&ll, str);
-    sscanf(countStr, "%d", &count);
+
+
+    //dequeue
+    sscanf(countStr, "%d", &count); 
     if (count == 0)
     {
         printf("None\n");
         return 0;
     }
-    while (i < count && check != -1)
+    while (i < count)
     {
         check = deQueue(&ll);
         i++;

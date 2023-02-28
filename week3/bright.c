@@ -40,7 +40,7 @@ Node* push(Node*cur,char* num) {
 Node* pop(Node*cur) {
     struct node *tmp;
     if (isEmpty(cur)) {
-        return;
+        return NULL;
     }
     else {
         tmp = cur;
