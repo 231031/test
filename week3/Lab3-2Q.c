@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 typedef struct stack
 {
     char *data; 
@@ -22,9 +23,7 @@ void stringInput(char *buffer)
 stack *makeStack(char *buffer)
 {
     stack *head = NULL;
-    // copy buffer before use
     char *token = strtok(strdup(buffer), " ");
-    // no push function
     while (token != NULL)
     {
         if (head != NULL)
@@ -45,8 +44,7 @@ stack *makeStack(char *buffer)
     return head;
 }
 
-// pop forward stack 
-// pop------>
+// pop forward stack
 char *popForward(stack **head)
 {
     if (*head == NULL)
@@ -55,13 +53,12 @@ char *popForward(stack **head)
     }
     stack *temp = *head;
     (*head) = (*head)->next;
-    char *buffer = strdup(temp->data); // copy string
+    char *buffer = strdup(temp->data);
     free(temp);
     return buffer;
 }
 
 // pop backward stack
-// <-------pop
 char *popBackward(stack **head)
 {   
     if (*head == NULL)
@@ -90,25 +87,18 @@ char *popBackward(stack **head)
 
 int main()
 {
-    // buffer for input
     char buffer[100];
-    // head of stack
-    // get input
     stringInput(buffer);
     stack *head1 = makeStack(buffer);
     stack *head2 = makeStack(buffer);
 
-    // while stack is not empty
     while (head1 != NULL)
     {
-        // pop and print
         printf("%s ", popBackward(&head1));
     }
     printf("\n");
     while (head2 != NULL)
     {
-        // pop and print
         printf("%s ", popForward(&head2));
     }
-
 }

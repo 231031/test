@@ -1,34 +1,3 @@
-/*
-Implement a linked queue using an linked list with the following operations:
-
-Enqueue: Add an element to the queue
-Dequeue: Remove and return the element at the front of the queue
-Input: 
-
-First Line : A sequence of m (0 ≤ m ≤ 1000) space-separated input, the elements to enqueue in the queue
-
-Third Line : An integer n (1 ≤ n ), the number of output ( dequeue )
-
-Output: 
-
-First Line : Dequeue element
-
-### if queue is empty when dequeue, print None
-
-### input may consist of character
-
-1 2 3
-2
-​output
-​1 2
-
-
-1 2 3
-4
-output
-1 2 3 None 
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

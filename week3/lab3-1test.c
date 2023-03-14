@@ -31,32 +31,21 @@ int isOperator(char c)
     return c == '+' || c == '-' || c == '*' || c == '/';
 }
 
-int isBracket(char c)
+int priority(char c)
 {
-    return c == '(' || c == ')';
-}
-
-int piority(char c)
-{
-    // use if and use bracket
-    if (c == '*')
-    {
-        return 3;
-    }
-    else if (c == '/')
-    {
-        return 2;
-    }
-    else if (c == '+' || c == '-')
+    if (c == '+' || c == '-')
     {
         return 1;
+    }
+    else if (c == '*' || c == '/')
+    {
+        return 2;
     }
     else
     {
         return 0;
     }
 }
-
 
 
 void infix_to_postfix(char *infix, char *postfix)
@@ -88,7 +77,7 @@ void infix_to_postfix(char *infix, char *postfix)
         }
         else if (isOperator(c))
         {
-            while (!isEmpty(top) && piority(peek(stack, top)) >= piority(c))
+            while (!isEmpty(top) && priority(peek(stack, top)) >= priority(c))
             {
                 postfix[strlen(postfix)] = pop(stack, &top);
             }
@@ -140,9 +129,7 @@ int main()
     char postfix[100] = "";
 
     scanf("%s", infix);
-    // use postfix first 
-    // because we need to reverse the infix
-    // in order to use prefix
+
     infix_to_postfix(infix, postfix);
     infix_to_prefix(infix, prefix);
 
