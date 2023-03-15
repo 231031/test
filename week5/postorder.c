@@ -189,6 +189,7 @@ int main()
     // setChild of C5
     setChild(&C5, LC6, 'L');
 
+    // fill height
     fillHeight(root);
     fillBalanceFactor(root);
 
