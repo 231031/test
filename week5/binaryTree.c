@@ -2,9 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-/*
-เริ่มต้นประกาศ struct treeNode ที่จะใช้เป็นที่เก็บข้อมูลของ node แต่ละ node ใน binary tree
-*/
 typedef struct treeNode
 {
     char data[100];
@@ -14,30 +11,17 @@ typedef struct treeNode
     struct treeNode *left;
 } treeNode;
 
-/*
-Function createNode
-จากนั้นสร้าง function createNode 
-เพื่อใช้สำหรับสร้าง node และใส่ข้อมูลให้แต่ละ node ใน binary tree
-*/
 treeNode *createdNode(char *data)
 {
     treeNode *node = NULL;
     node = malloc(sizeof(treeNode));
     strcpy(node->data, data);
-    // ให้ทั้ง left และ right ของแต่ละ node ที่ถูกสร้างเป็น NULL ก่อน
     node->left = NULL;
     node->right = NULL;
 
     return node;
 }
 
-/*
-Function setChild
-ใช้สำหรับ set child ให้แต่ละ node ใน binary tree โดยรับพารามิเตอร์เป็น 
--	Parent node ที่ต้องการจะ set child
--	Child node ที่ต้องการจะเพิ่มเข้ามาใน binary tree
--	ทิศทางที่ต้องการให้ child node อยู่
-*/
 int setChild(treeNode **parent, treeNode *child, char direction)
 {
     int success = 1;
@@ -62,68 +46,29 @@ int setChild(treeNode **parent, treeNode *child, char direction)
     return success;
 }
 
-/*
-Function fillHeight
-ใช้สำหรับหา height ให้กับแต่ละ node ใน binary tree โดยรับพารามิเตอร์เป็น root ของ binary tree 
-และใช้เรื่อง recursive function ในการคำนวณหา height ให้กับแต่ละ node
-*/
-void fillHeight(treeNode *node)
-{
-    int height = 0;
-    if (node->left != NULL)
-    {
-        fillHeight(node->left);
+int getHeight(treeNode* node) {
+    if (node == NULL) {
+        return 0;
     }
-    if (node->right != NULL)
-    {
-        fillHeight(node->right);
-    }
-
-    if (node->left == NULL && node->right == NULL)
-        height = 0;
-    else if (node->left == NULL)
-        height = node->right->height + 1;
-    else if (node->right == NULL)
-        height = node->left->height + 1;
-    else if (node->right->height > node->left->height)
-        height = node->right->height + 1;
-    else
-        height = node->left->height + 1;
-
-    node->height = height;
+    int leftHeight = getHeight(node->left);
+    int rightHeight = getHeight(node->right);
+    return 1 + ((leftHeight > rightHeight) ? leftHeight : rightHeight);
 }
 
-/*
-Function fillBalanceFactor
-ใช้สำหรับหา balance factor ของ แต่ละ node ใน binary tree
-โดยนำ left height ของ node ที่ต้องหา balance factor ลบกับ right height ของ node เดียวกัน
-*/
-void fillBalanceFactor(treeNode *node)
-{
-    int leftHeight = 0, rightHeight = 0;
-    if (node->left != NULL)
-        fillBalanceFactor(node->left);
-    if (node->right != NULL)
-        fillBalanceFactor(node->right);
-    
-    if (node->left == NULL)
-        leftHeight = 0;
-    else
-        leftHeight = node->left->height + 1;
+void getBalanceFactor(treeNode** node) {
+    int leftHeight = 0;
+    int rightHeight = 0;
 
-    if (node->right == NULL)
-        rightHeight = 0;
-    else
-        rightHeight = node->right->height + 1;
+    if ((*node)->left != NULL) {
+        leftHeight = getHeight((*node)->left);
+    }
+    if ((*node)->right != NULL) {
+        rightHeight = getHeight((*node)->right);
+    }
 
-    node->balanceFactor = leftHeight - rightHeight;
+    (*node)->balanceFactor = leftHeight - rightHeight;
 }
 
-/*
-Function postOrder
-ใช้สำหรับ traverse binary tree แบบ post order left-right-root
-โดยใช้จะนำ recursive function มาใช้
-*/
 int postOrder(treeNode *root)
 {
     treeNode *ptr = root;
@@ -143,9 +88,6 @@ int postOrder(treeNode *root)
 int main()
 {
     int status = 0, check = 0;
-
-    // สร้าง node แต่ละ node และใส่ข้อมูลที่ต้องการเก็บใน node ใน parameter 
-
     treeNode *root =  createdNode("General");
 
     treeNode *LG1 = createdNode("Lieutenant General1");
@@ -171,7 +113,6 @@ int main()
     treeNode *LC5 = createdNode("Lieutenant Colonel5");
     treeNode *LC6 = createdNode("Lieutenant Colonel6");
 
-    // set child ให้แต่ละ node โดยเริ่มตั้งแต่ root
     // setChild of root
     setChild(&root, LG1, 'L');
 
@@ -225,8 +166,7 @@ int main()
     setChild(&C5, LC6, 'L');
 
     // fill height
-    fillHeight(root);
-    fillBalanceFactor(root);
+    getBalanceFactor(&root);
 
     postOrder(root);
     return 0;

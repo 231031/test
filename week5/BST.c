@@ -86,23 +86,22 @@ int insertNode(treeNode **root, treeNode *newNode)
 
     }
 }
-/*
+
 int displayTree(treeNode *root)
 {
     treeNode *ptr = root;
+    printf("%d ", ptr->data);
     if (ptr->left != NULL) // ถ้าเข้าเงื่อนไขแล้วเข้าไปที่ function แล้วออกมาแล้วก็คือทำไปแล้ว เสร็จแล้วก็จะไปเช็ค right ค่อ
     {
-        printf("%d ", ptr->data);
         displayTree(ptr->left);
     }
     if (ptr->right != NULL)
     {
-        printf("%d ", ptr->data);
         displayTree(ptr->right);
     }
 }
-*/
 
+/*
 // postOrder
 int displayTree(treeNode *root)
 {
@@ -117,10 +116,11 @@ int displayTree(treeNode *root)
     }
     printf("%d ", ptr->data);
 }
-
+*/
 // check searchElement
 treeNode *searchElement(treeNode *root, int key)
 {
+    int count = 0;
     treeNode *pre = root;
     treeNode *node = NULL;
     do 
@@ -128,11 +128,17 @@ treeNode *searchElement(treeNode *root, int key)
         if (pre->data == key)
             node = pre;
         else if (key > pre->data)
+        {
             pre = pre->right;
+            count++;
+        }
         else // key < pre->data
+        {
             pre = pre->left;
+            count++;
+        }     
     } while (pre != NULL && node == NULL);
-
+    printf("count search %d\n", count);
     return node;
 }
 
@@ -160,4 +166,8 @@ int main()
     }
 
     displayTree(root);
+    printf("\n");
+    searchElement(root, 12);
+
+    
 }
