@@ -80,7 +80,7 @@ void fillHeight(treeNode *node)
     }
 
     if (node->left == NULL && node->right == NULL)
-        height = 0;
+        height = 1;
     else if (node->left == NULL)
         height = node->right->height + 1;
     else if (node->right == NULL)
@@ -109,12 +109,12 @@ void fillBalanceFactor(treeNode *node)
     if (node->left == NULL)
         leftHeight = 0;
     else
-        leftHeight = node->left->height + 1;
+        leftHeight = node->left->height;
 
     if (node->right == NULL)
         rightHeight = 0;
     else
-        rightHeight = node->right->height + 1;
+        rightHeight = node->right->height;
 
     node->balanceFactor = leftHeight - rightHeight;
 }
@@ -139,6 +139,28 @@ int postOrder(treeNode *root)
     printf("%d\n", ptr->balanceFactor);
 }
 
+/*
+void printLevel(Node* node, int level) {
+    if (node == NULL) {
+        return;
+    }
+    if (level == 1) {
+        printf("%d ", node->data);
+    }
+    else if (level > 1) {
+        printLevel(node->left, level - 1);
+        printLevel(node->right, level - 1);
+    }
+}
+
+// perform level order traversal of the binary search tree
+void levelOrderTraversal(Node* node) {
+    int height = getHeight(node);
+    for (int i = 1; i <= height; i++) {
+        printLevel(node, i);
+    }
+}
+*/
 
 int main()
 {

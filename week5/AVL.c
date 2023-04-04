@@ -5,9 +5,7 @@
 typedef struct treeNode
 {
     int data;
-    int balanceFactor;
     int height;
-    int balanceType;
     struct treeNode *right;
     struct treeNode *left;
 } treeNode;
@@ -115,25 +113,9 @@ void fillHeight(treeNode *node)
     node->height = height;
 }
 
-void fillBalanceFactor(treeNode *node)
+void checkBalanceFactor(treeNode *node)
 {
-    int leftHeight = 0, rightHeight = 0;
-    if (node->left != NULL)
-        fillBalanceFactor(node->left);
-    if (node->right != NULL)
-        fillBalanceFactor(node->right);
-    
-    if (node->left == NULL)
-        leftHeight = 0;
-    else
-        leftHeight = node->left->height + 1;
 
-    if (node->right == NULL)
-        rightHeight = 0;
-    else
-        rightHeight = node->right->height + 1;
-
-    node->balanceFactor = leftHeight - rightHeight;
 }
 
 int checkUnbalanceType(treeNode *node)
@@ -161,10 +143,10 @@ int main()
     {
         newNode = createdNode(data);
         insertNode(&root, newNode);
+        fillHeight(&root);
         token = strtok(NULL, " ");
         sscanf(token, "%d", &data);
     }
 
-    fillHeight(root);
-    fillBalanceFactor(root);
+    return 0;
 }

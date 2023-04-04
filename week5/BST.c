@@ -18,105 +18,108 @@ treeNode *createdNode(int data)
     node->data = data;
     node->left = NULL;
     node->right = NULL;
-
+    node->height = 1;
     return node;
 }
 
-int insertNode(treeNode **root, treeNode *newNode)
+
+/*
+recursive function
+ลงไปจนถึง level แรกเพื่อเพิ่ม height ขึ้นเรื่อยๆ
+*/
+void fillHeight(treeNode *node)
 {
-    int check = 0;
-    treeNode *p, *previous;
-    if (*root == NULL)
+    int height = 0;
+    if (node->left != NULL)
     {
-        *root = newNode;
+        fillHeight(node->left);
     }
+    if (node->right != NULL)
+    {
+        fillHeight(node->right);
+    }
+
+    if (node->left == NULL && node->right == NULL)
+        height = 1;
+    else if (node->left == NULL)
+        height = node->right->height + 1;
+    else if (node->right == NULL)
+        height = node->left->height + 1;
+    else if (node->right->height > node->left->height)
+        height = node->right->height + 1;
     else
-    {
-        p = *root;
-        previous = *root;
-        if (p->left == NULL && p->right == NULL)
-        {
-            if (newNode->data > p->data)
-            {
-                p->right = newNode;
-            }
-            else if (newNode->data < p->data)
-            {
-                p->left = newNode;
-            }
-            return 0;
-        }
-        
-        while (p->left != NULL || p->right != NULL)
-        {
-            if (newNode->data > p->data)
-            {
-                if (p->right == NULL)
-                {
-                    p->right = newNode;
-                    check = 0;
-                    return 0;
-                }
-                previous = p;
-                p = p->right;
-            }
-            else if (newNode->data < p->data)
-            {
-                if (p->left == NULL)
-                {
-                    p->left == newNode;
-                    check = 0;
-                    return 0;
-                }
-                previous = p;
-                p = p->left;
-            } 
-        } 
+        height = node->left->height + 1;
 
-        // when find node that both left and right is NULL so check that what side have to add
-        if (newNode->data > p->data)
-        {
-            p->right = newNode;
-        }
-        else if (newNode->data < p->data)
-        {
-            p->left = newNode;
-        }
-        return 0;
-
-    }
-}
-
-int displayTree(treeNode *root)
-{
-    treeNode *ptr = root;
-    printf("%d ", ptr->data);
-    if (ptr->left != NULL) // ถ้าเข้าเงื่อนไขแล้วเข้าไปที่ function แล้วออกมาแล้วก็คือทำไปแล้ว เสร็จแล้วก็จะไปเช็ค right ค่อ
-    {
-        displayTree(ptr->left);
-    }
-    if (ptr->right != NULL)
-    {
-        displayTree(ptr->right);
-    }
+    node->height = height;
 }
 
 /*
-// postOrder
-int displayTree(treeNode *root)
-{
-    treeNode *ptr = root;
-    if (ptr->left != NULL) // ถ้าเข้าเงื่อนไขแล้วเข้าไปที่ function แล้วออกมาแล้วก็คือทำไปแล้ว เสร็จแล้วก็จะไปเช็ค right ค่อ
-    {
-        displayTree(ptr->left);
-    }
-    if (ptr->right != NULL)
-    {
-        displayTree(ptr->right);
-    }
-    printf("%d ", ptr->data);
-}
+recursive function
+เพื่อหา node ที่เหมาะสมสำหรับนำ node ใหม่ไปใส่
 */
+treeNode* insertNode(treeNode *root, treeNode *newNode)
+{
+    int check = 0;
+    if (root == NULL)
+    {
+        return newNode;
+    }
+    if (newNode->data > root->data)
+        root->right = insertNode(root->right, newNode);
+    else if (newNode->data < root->data)
+        root->left = insertNode(root->left, newNode);
+
+    return root;
+}
+
+// level order
+int displayTreeLevel(treeNode *root)
+{
+    printf("%d ", root->data);
+    if (root->left != NULL) // ถ้าเข้าเงื่อนไขแล้วเข้าไปที่ function แล้วออกมาแล้วก็คือทำไปแล้ว เสร็จแล้วก็จะไปเช็ค right ค่อ
+    {
+        displayTree(root->left);
+    }
+    if (root->right != NULL)
+    {
+        displayTree(root->right);
+    }
+}
+
+int displayTreePre(treeNode *root) // root left right
+{
+    printf("%d ", root->data);
+    if (root->left != NULL)
+        displayTreePre(root->left);
+    if (root->right != NULL)
+        displayTreePre(root->right);
+}
+
+
+int displayTreeIn(treeNode *root) // left root right
+{
+    if (root != NULL)
+    {
+        displayTree(root->left);
+        printf("%d ", root->data);
+        displayTreeIn(root->right);
+    }
+}
+
+int displayTreePost(treeNode *root) // left right root
+{
+    if (root->left != NULL) // ถ้าเข้าเงื่อนไขแล้วเข้าไปที่ function แล้วออกมาแล้วก็คือทำไปแล้ว เสร็จแล้วก็จะไปเช็ค right ค่อ
+    {
+        displayTree(root->left);
+    }
+    if (root->right != NULL)
+    {
+        displayTree(root->right);
+    }
+    printf("%d ", root->data);
+}
+
+
 // check searchElement
 treeNode *searchElement(treeNode *root, int key)
 {
@@ -160,11 +163,12 @@ int main()
     while (token != NULL)
     {
         newNode = createdNode(data);
-        insertNode(&root, newNode);
+        root = insertNode(root, newNode);
         token = strtok(NULL, " ");
         sscanf(token, "%d", &data);
     }
 
+    fillHeight(root);
     displayTree(root);
     printf("\n");
     searchElement(root, 12);

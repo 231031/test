@@ -3,6 +3,12 @@
         "stdio.h": "c",
         "stdlib.h": "c",
         "random": "c",
-        "limits": "c"
+        "limits": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c",
+        "ranges": "c",
+        "algorithm": "c",
+        "string.h": "c"
     }
 }
