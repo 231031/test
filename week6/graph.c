@@ -15,6 +15,8 @@ typedef struct vertex
     struct vertex *next;
     adjVertex *adjacentHead;
     adjVertex *adjacentTail;
+    char traverse[100];// keep key of vertex that traverse
+    int *visited;
 } vertex;
 
 void removeEnter(char *str)
@@ -78,7 +80,7 @@ int createVertex(vertex **vListHead, vertex **vListTail, char *key)
 {
     // จะสร้าง vertex เมื่อยังไม่มี vertex นั้น (key ต้องไม่ซ้ำกับ vertex เดิมที่มีอยู่แล้ว)
     vertex *search = NULL;
-    search = findVertexByKey(vListHead, key);
+    search = findVertexByKey(*vListHead, key);
     if (search != NULL)
         return -1;
 
@@ -104,6 +106,8 @@ int createVertex(vertex **vListHead, vertex **vListTail, char *key)
 
 int displayAdj(adjVertex *headAdj) // head of adjacent list of present vertex
 {
+    if (headAdj == NULL) // check in case this vertex not have adjacency list
+        return -1;
     printf("%s ", headAdj->key);
 
     // recursive function for display Adjacency list of this vertex
@@ -111,9 +115,11 @@ int displayAdj(adjVertex *headAdj) // head of adjacent list of present vertex
         displayAdj(headAdj->next);
 }
 
-void displayGraph(vertex *vListHead)
+int displayGraph(vertex *vListHead)
 {
     vertex *displayVertex = vListHead;
+    if (displayVertex == NULL)
+        return -1;
     printf("Vertex %s : ", displayVertex->key);
     displayAdj(displayVertex->adjacentHead); // call function and send adjacentHead to display adjacent list of this vertex
     printf("\n");
@@ -143,7 +149,7 @@ void clearGraph(vertex *vListHead)
     vertex *delVertex = NULL;
     while (curVertex != NULL)
     {
-        freeAdjacentList(curVertex->adjacentHead);
+        freeAdjacentList(curVertex);
         delVertex = curVertex;
         curVertex = curVertex->next;
         free(delVertex->key);
@@ -173,7 +179,7 @@ int main()
 
     // create vertex list
     token = strtok(input, " ");
-    while (i < num)
+    while (token != NULL && i < num)
     {
         createVertex(&vListHead, &vListTail, token);
         token = strtok(NULL, " ");

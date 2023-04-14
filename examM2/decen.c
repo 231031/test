@@ -9,12 +9,12 @@ typedef struct treeNode
     int height;
     struct treeNode *right;
     struct treeNode *left;
-} treeNode;
+} TREENODE_T;
 
-treeNode *createdNode(int data)
+TREENODE_T *createdNode(int data)
 {
-    treeNode *node = NULL;
-    node = malloc(sizeof(treeNode));
+    TREENODE_T *node = NULL;
+    node = malloc(sizeof(TREENODE_T));
     node->data = data;
     node->left = NULL;
     node->right = NULL;
@@ -22,12 +22,7 @@ treeNode *createdNode(int data)
     return node;
 }
 
-
-/*
-recursive function
-ลงไปจนถึง level แรกเพื่อเพิ่ม height ขึ้นเรื่อยๆ
-*/
-void fillHeight(treeNode *node)
+void fillHeight(TREENODE_T *node)
 {
     int height = 0;
     if (node->left != NULL)
@@ -53,11 +48,7 @@ void fillHeight(treeNode *node)
     node->height = height;
 }
 
-/*
-recursive function
-เพื่อหา node ที่เหมาะสมสำหรับนำ node ใหม่ไปใส่
-*/
-treeNode* insertNode(treeNode *root, treeNode *newNode)
+TREENODE_T* insertNode(TREENODE_T *root, TREENODE_T *newNode)
 {
     int check = 0;
     if (root == NULL)
@@ -72,48 +63,11 @@ treeNode* insertNode(treeNode *root, treeNode *newNode)
     return root;
 }
 
-
-
-int displayTreePre(treeNode *root) // root left right
-{
-    printf("%d ", root->data);
-    if (root->left != NULL)
-        displayTreePre(root->left); // ถ้าเข้าเงื่อนไขแล้วเข้าไปที่ function แล้วออกมาแล้วก็คือทำไปแล้ว เสร็จแล้วก็จะไปเช็ค right ค่อ
-    if (root->right != NULL)
-        displayTreePre(root->right);
-}
-
-
-int displayTreeIn(treeNode *root) // left root right
-{
-    if (root != NULL)
-    {
-        displayTreeIn(root->left);
-        printf("%d ", root->data);
-        displayTreeIn(root->right);
-    }
-}
-
-int displayTreePost(treeNode *root) // left right root
-{
-    if (root->left != NULL) // ถ้าเข้าเงื่อนไขแล้วเข้าไปที่ function แล้วออกมาแล้วก็คือทำไปแล้ว เสร็จแล้วก็จะไปเช็ค right ค่อ
-    {
-        displayTreePost(root->left);
-    }
-    if (root->right != NULL)
-    {
-        displayTreePost(root->right);
-    }
-    printf("%d ", root->data);
-}
-
-
-// check searchElement
-treeNode *searchElement(treeNode *root, int key)
+TREENODE_T *searchElement(TREENODE_T *root, int key)
 {
     int count = 0;
-    treeNode *pre = root;
-    treeNode *node = NULL;
+    TREENODE_T *pre = root;
+    TREENODE_T *node = NULL;
     do 
     {
         if (pre->data == key)
@@ -129,19 +83,36 @@ treeNode *searchElement(treeNode *root, int key)
             count++;
         }     
     } while (pre != NULL && node == NULL);
-    printf("count search %d\n", count);
+    //printf("count search %d\n", count);
     return node;
 }
 
-
+int isDescendant(TREENODE_T *root, int keyI, int keyJ, TREENODE_T *nodeJ)
+{
+    // recursive function i เป็นลูกหลานของ j ไหม traverse ตั้งแต่ j แล้วหา i
+    int check = 1;
+    TREENODE_T *nodeI = searchElement(root, keyI);
+    if (nodeJ == NULL)
+        nodeJ = searchElement(root, keyJ);
+    
+    if (nodeI->data == nodeJ->data){
+        printf("i descendants of j\n");
+        return 0;
+    }
+    if (nodeJ->left != NULL && check != 0)
+        check = isDescendant(root, keyI, keyJ, nodeJ->left);
+    if (nodeJ->right != NULL && check != 0)
+        check = isDescendant(root, keyI, keyJ, nodeJ->right);
+}
 
 int main()
 {
     char str[100];
     char *token;
     int data;
-    treeNode *root = NULL;
-    treeNode *newNode = NULL;
+    TREENODE_T *root = NULL;
+    TREENODE_T *newNode = NULL;
+    TREENODE_T *nodeJ = NULL;
     fgets(str, 100, stdin);
     str[strlen(str) - 1] = '\0';  
 
@@ -158,9 +129,6 @@ int main()
     }
 
     fillHeight(root);
-    displayTreePost(root);
-    printf("\n");
-    searchElement(root, 12);
+    isDescendant(root, 21, 15, nodeJ);
 
-    
 }
