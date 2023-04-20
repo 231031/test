@@ -129,33 +129,33 @@ int displayGraph(vertex *vListHead)
         displayGraph(displayVertex->next);
 }
 
-void freeAdjacentList(vertex *curVertex)
-{
-    adjVertex *curAdj = curVertex->adjacentHead;
-    adjVertex *delAdj = NULL;
-    while (curAdj != NULL)
-    {
-        delAdj = curAdj;
-        curAdj = curAdj->next;
-        free(delAdj);
-    }
-    curVertex->adjacentHead = NULL;
-    curVertex->adjacentTail = NULL;
-}
+// void freeAdjacentList(vertex *curVertex)
+// {
+//     adjVertex *curAdj = curVertex->adjacentHead;
+//     adjVertex *delAdj = NULL;
+//     while (curAdj != NULL)
+//     {
+//         delAdj = curAdj;
+//         curAdj = curAdj->next;
+//         free(delAdj);
+//     }
+//     curVertex->adjacentHead = NULL;
+//     curVertex->adjacentTail = NULL;
+// }
 
-void clearGraph(vertex *vListHead)
-{
-    vertex *curVertex = vListHead;
-    vertex *delVertex = NULL;
-    while (curVertex != NULL)
-    {
-        freeAdjacentList(curVertex);
-        delVertex = curVertex;
-        curVertex = curVertex->next;
-        free(delVertex->key);
-        free(delVertex);
-    }
-}
+// void clearGraph(vertex *vListHead)
+// {
+//     vertex *curVertex = vListHead;
+//     vertex *delVertex = NULL;
+//     while (curVertex != NULL)
+//     {
+//         freeAdjacentList(curVertex);
+//         delVertex = curVertex;
+//         curVertex = curVertex->next;
+//         free(delVertex->key);
+//         free(delVertex);
+//     }
+// }
 
 
 int main()
